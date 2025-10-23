@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:evently_app/main.dart';
 import 'package:evently_app/screens/onboarding_start/widgets/custom_switch.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/resourse/AssetsManager.dart';
@@ -17,17 +18,37 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  TextEditingController emailController =TextEditingController();
-  TextEditingController passwordController =TextEditingController();
-  TextEditingController nameController =TextEditingController();
-  TextEditingController repassController =TextEditingController();
+
+  late TextEditingController emailController ;
+  late TextEditingController passwordController ;
+  late TextEditingController nameController ;
+  late TextEditingController repassController ;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    nameController = TextEditingController();
+    repassController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+    repassController.dispose();
+  }
+
   final _formKey = GlobalKey<FormState>();
   String selectedLanguage="en";
 
   @override
   Widget build(BuildContext context) {
     selectedLanguage=context.locale.languageCode;
-
     double height=MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -93,11 +114,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     action: TextInputAction.done,
 
                   ),
-                  SizedBox(height: 16,),
+                  SizedBox(height: 30,),
                   CustomButton(
                       title: "cre_acc",
                       onPressed: (){
                         if(_formKey.currentState!.validate()){
+                          createAccount();
                         }
                       }),
                   SizedBox(height: 16,),
@@ -142,5 +164,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
       ),
     );
+  }
+  createAccount()async{
+    try{
+      var credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text
+      );
+      print("Done");
+    } on FirebaseAuthException catch(e){
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    }catch(error){
+      print(error);
+    }
+
   }
 }

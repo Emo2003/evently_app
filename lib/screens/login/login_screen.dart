@@ -2,10 +2,12 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:evently_app/core/resourse/AssetsManager.dart';
 import 'package:evently_app/core/resourse/ColorsManager.dart';
 import 'package:evently_app/core/resourse/RouteManager.dart';
-import 'package:evently_app/main.dart';
 import 'package:evently_app/screens/CustomButton.dart';
 import 'package:evently_app/screens/login/widgets/CustomTextField.dart';
 import 'package:flutter/material.dart';
+import '../../main.dart';
+import '../home/home_screen.dart';
+import '../../services/fire_base_services.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,11 +18,23 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
 
-
-  TextEditingController emailController =TextEditingController();
-  TextEditingController passwordController =TextEditingController();
+  late TextEditingController emailController ;
+  late TextEditingController passwordController;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+  }
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+  }
   final _formKey = GlobalKey<FormState>();
-
   @override
   Widget build(BuildContext context) {
     double height=MediaQuery.of(context).size.height;
@@ -36,24 +50,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
             Center(child: Image.asset(
                 AssetsManager.logo,
-                height: height*0.25)),
+                height: height*0.23)),
                 SizedBox(height: 24,),
                 CustomTextField(hint: "email".tr(),
                 prefix: AssetsManager.email,
                 onChanged: (value){},
-                  fieldType: FieldType.email,
                   controller: emailController,
                   action: TextInputAction.next,
-
+                  fieldType: FieldType.email,
                 ),
                 SizedBox(height: 16,),
                 CustomTextField(hint: "pass".tr(),
-                fieldType: FieldType.password,
                 prefix: AssetsManager.pass,
                 onChanged: (value){},
                   controller:passwordController ,
                 isPassword: true,
-                  action: TextInputAction.done,
+                  action: TextInputAction.next,
+                  fieldType: FieldType.password,
                 ),
                   SizedBox(height: 16,),
                   TextButton(
@@ -116,16 +129,31 @@ class _LoginScreenState extends State<LoginScreen> {
                        SizedBox(height: 24,),
                   ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: ColorsManager.backgroundLight,
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
-                          side: BorderSide(color: ColorsManager.blue),
+                          side: BorderSide(color: Theme.of(context).colorScheme.tertiary),
                         ),
                         minimumSize: Size(double.infinity, 60),
                       ),
-                      onPressed: (){
+                      onPressed: () async {
+                        final user = await FirebaseServices().signInWithGoogle();
 
+                        if (user != null) {
+                          Navigator.pushReplacement(
+                            context,
+                              MaterialPageRoute(builder: (context) => const HomeScreen()),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Login cancelled or failed")),
+                          );
+                        }
                       },
+
+
+
                       child:
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -137,6 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ],
                       )
                   )
+
                 ],
             ),
           ),

@@ -8,6 +8,8 @@ class AppStyle{
     primary: ColorsManager.black,
     secondary: ColorsManager.blue,
       tertiary: ColorsManager.field,
+        onSecondary: ColorsManager.field
+
     ),
     textTheme: TextTheme(
       headlineLarge: TextStyle(
@@ -40,7 +42,8 @@ class AppStyle{
       colorScheme: ColorScheme.dark(
           primary: ColorsManager.text_dark,
           secondary: ColorsManager.blue,
-           tertiary: ColorsManager.blue
+           tertiary: ColorsManager.blue,
+        onSecondary: ColorsManager.text_dark
       ),
       textTheme: TextTheme(
           headlineLarge: TextStyle(
