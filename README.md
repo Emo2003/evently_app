@@ -1,16 +1,28 @@
-# evently_app
 
-A new Flutter project.
+## 🪩 Evently App
 
-## Getting Started
+**Evently** is a Flutter project that provides a smooth user experience from the start.
+It includes essential onboarding and authentication features to help users easily begin using the app.
 
-This project is a starting point for a Flutter application.
+### ✨ Features
 
-A few resources to get you started if this is your first Flutter project:
+* 🚀 **Splash Screen** – Welcomes users with an animated intro.
+* 🧭 **Onboarding Screens** – Introduce the app’s purpose and main features.
+* 🔐 **Login Screen** – Allows users to sign in securely.
+* 📝 **Register Screen** – Enables new users to create an account.
+* 🔑 **Google Sign-In** – Supports logging in with a Google account.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### 🛠️ Tech Stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* **Framework:** Flutter
+* **Language:** Dart
+* **Authentication:** Firebase Auth & Google Sign-In
+* **State Management:** Provider
+* **Localization:** Easy Localization
+* **Storage:** Shared Preferences
+
+## video about what i do
+
+https://github.com/user-attachments/assets/3a4fdf7a-9f47-48df-aeba-3eca5df6d2d0
+
+
