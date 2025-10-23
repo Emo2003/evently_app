@@ -1,23 +1,33 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsManager {
-  static late SharedPreferences prefs;
-
-  static  init() async {
-    prefs = await SharedPreferences.getInstance();
+  static late SharedPreferences sharedPreferences;
+  static init()async{
+    sharedPreferences = await SharedPreferences.getInstance();
   }
   static setStart(bool value) async {
-    await prefs.setBool('onBoardingStart', value);
+    await sharedPreferences.setBool('onBoardingStart', value);
   }
-
+  static setTheme(ThemeMode mode){
+    sharedPreferences.setString("theme",mode==ThemeMode.dark?"dark": "light");
+  }
+  static ThemeMode getTheme(){
+    String saved = sharedPreferences.getString("theme")??"light";
+    if(saved == "dark"){
+      return ThemeMode.dark;
+    }else{
+      return ThemeMode.light;
+    }
+  }
   static bool getStart() {
-    return prefs.getBool('onBoardingStart') ?? false;
+    return sharedPreferences.getBool('onBoardingStart') ?? false;
   }
   static setItems(bool value) async {
-    await prefs.setBool('onBoardingActive', value);
+    await sharedPreferences.setBool('onBoardingActive', value);
   }
 
   static bool getItems() {
-    return prefs.getBool('onBoardingActive') ?? false;
+    return sharedPreferences.getBool('onBoardingActive') ?? false;
   }
 }

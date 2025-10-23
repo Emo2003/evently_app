@@ -75,7 +75,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
           return null;
         },
-
+       style: Theme.of(context).textTheme.titleSmall,
       obscureText: isActive,
       controller: widget.controller,
       onChanged: widget.onChanged ,
@@ -83,24 +83,29 @@ class _CustomTextFieldState extends State<CustomTextField> {
         hintText: widget.hint,
         hintStyle: Theme.of(context).textTheme.titleSmall,
         prefixIcon: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(12.0),
           child: SvgPicture.asset(
+            colorFilter: ColorFilter.mode(
+                Theme.of(context).colorScheme.onSecondary,
+                BlendMode.srcIn),
               widget.prefix,
           width: 25,
             height: 25,),
         ),
        suffixIcon: widget.isPassword
            ?IconButton(
+         color: Theme.of(context).colorScheme.onSecondary,
            onPressed: (){
              setState(() {
                isActive=!isActive;
              });
            },
          icon: Icon(
+           color: Theme.of(context).colorScheme.onSecondary,
            !isActive?
            Icons.visibility:
          Icons.visibility_off),
-         color: Theme.of(context).colorScheme.tertiary,)
+       )
            :null,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(16),

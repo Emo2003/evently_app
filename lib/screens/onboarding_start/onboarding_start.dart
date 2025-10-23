@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:evently_app/core/resourse/ColorsManager.dart';
 import 'package:evently_app/core/resourse/RouteManager.dart';
-import 'package:evently_app/core/resourse/ThemeProvider.dart';
+import 'package:evently_app/core/providers/ThemeProvider.dart';
 import 'package:evently_app/screens/onboarding_start/widgets/custom_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/resourse/AssetsManager.dart';
+import '../../core/resourse/PrefsManager.dart';
 import '../CustomButton.dart';
 
 class OnboardingStart extends StatefulWidget {
@@ -93,9 +93,11 @@ class _OnboardingStartState extends State<OnboardingStart> {
                         selectedTheme=value;
                         if(selectedTheme=="dark"){
                           provider.changeTheme(ThemeMode.dark);
+                          PrefsManager.setTheme(ThemeMode.dark);
                         }
                         else{
                           provider.changeTheme(ThemeMode.light);
+                          PrefsManager.setTheme(ThemeMode.light);
                         }
                       });
                     },
@@ -104,7 +106,8 @@ class _OnboardingStartState extends State<OnboardingStart> {
               ),
               Spacer(),
               CustomButton(title: "lets_start",
-              onPressed: (){
+              onPressed: ()async{
+                await PrefsManager.setStart(true);
                 Navigator.of(context).pushReplacementNamed(
                     RouteManager.onboarding);
               },)
