@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:evently_app/core/resourse/DialogUtils.dart';
 import 'package:evently_app/main.dart';
+import 'package:evently_app/models/UserModel.dart';
 import 'package:evently_app/screens/onboarding_start/widgets/custom_switch.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../core/resourse/AssetsManager.dart';
 import '../../core/resourse/ColorsManager.dart';
 import '../../core/resourse/RouteManager.dart';
+import '../../services/Firebase_storageManager.dart';
 import '../CustomButton.dart';
 import '../login/widgets/CustomTextField.dart';
 
@@ -167,19 +170,52 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
   createAccount()async{
     try{
+      DialogUtils.LoadingDialog(context);
       var credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text
       );
-      print("Done");
+      Navigator.of(context).pop();
+      await FirebaseStorageManager.AddUser(UserModel(
+          id: credential.user!.uid,
+          name: nameController.text,
+          email: emailController.text,
+      ));
+      DialogUtils.DialogMessage(
+          message: "Created Account Successfully!",
+          context: context,
+          positiveOnPressed: (){
+            Navigator.of(context).pushReplacementNamed(RouteManager.login);
+          },
+          positiveButtonText: "Ok");
     } on FirebaseAuthException catch(e){
+      Navigator.of(context).pop();
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
+        DialogUtils.DialogMessage(
+            message: 'The password provided is too weak.',
+            context: context,
+            positiveOnPressed: (){
+              Navigator.of(context).pop();
+            },
+            positiveButtonText: "Ok");
       } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
+        DialogUtils.DialogMessage(
+            message: 'The account already exists for that email.',
+            context: context,
+            positiveOnPressed: (){
+              Navigator.of(context).pop();
+            },
+            positiveButtonText: "Ok"
+        );
       }
     }catch(error){
-      print(error);
+      DialogUtils.DialogMessage(
+          message: error.toString(),
+          context: context,
+          positiveOnPressed: (){
+            Navigator.of(context).pop();
+          },
+          positiveButtonText: "Ok");
     }
 
   }

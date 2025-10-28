@@ -3,6 +3,7 @@ import 'package:evently_app/core/AppStyle.dart';
 import 'package:evently_app/core/resourse/PrefsManager.dart';
 import 'package:evently_app/core/resourse/RouteManager.dart';
 import 'package:evently_app/core/providers/ThemeProvider.dart';
+import 'package:evently_app/screens/home/home_screen.dart';
 import 'package:evently_app/screens/login/login_screen.dart';
 import 'package:evently_app/screens/onboarding/onboarding_screen.dart';
 import 'package:evently_app/screens/onboarding_start/onboarding_start.dart';
@@ -11,6 +12,7 @@ import 'package:evently_app/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'core/providers/UserProvider.dart';
 import 'firebase_options.dart';
 
 
@@ -70,7 +72,10 @@ class EventlyApp extends StatelessWidget {
         RouteManager.register:(context)=>RegisterScreen(),
         RouteManager.login:(context)=>LoginScreen(),
         RouteManager.onboarding:(context)=>OnboardingScreen(),
-        RouteManager.onboarding_start:(context)=>OnboardingStart()
+        RouteManager.onboarding_start:(context)=>OnboardingStart(),
+        RouteManager.home:(context)=>ChangeNotifierProvider(
+            create:(context)=>UserProvider() ,
+            child: HomeScreen()),
       },
 
     );
