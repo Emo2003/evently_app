@@ -8,7 +8,11 @@ import 'package:evently_app/screens/login/widgets/CustomTextField.dart';
 import 'package:evently_app/screens/onboarding_start/widgets/custom_switch.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../core/providers/UserProvider.dart';
 import '../../main.dart';
+import '../../models/UserModel.dart';
+import '../../services/Firebase_storageManager.dart';
 import '../home/home_screen.dart';
 import '../../services/fire_base_services.dart';
 
@@ -141,19 +145,34 @@ class _LoginScreenState extends State<LoginScreen> {
                       minimumSize: Size(double.infinity, 60),
                     ),
                     onPressed: () async {
-                      final user = await FirebaseServices().signInWithGoogle();
+                      try {
+                        final userCredential = await FirebaseServices().signInWithGoogle();
+                        if (userCredential == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Login cancelled or failed")),
+                          );
+                          return;
+                        }
+                        final uid = userCredential.user!.uid;
+                        var existingUser = await FirebaseStorageManager.GetUsers(uid);
+                        if (existingUser == null) {
+                          final newUser = UserModel(
+                            id: uid,
+                            name: userCredential.user!.displayName,
+                            email: userCredential.user!.email,
+                          );
+                          await FirebaseStorageManager.AddUser(newUser);
+                          existingUser = newUser;
+                        }
 
-                      if (user != null) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => const HomeScreen()),
-                        );
-                      } else {
+                        Navigator.pushReplacementNamed(context, RouteManager.home);
+                      } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Login cancelled or failed")),
+                          SnackBar(content: Text("Login failed: $e")),
                         );
                       }
                     },
+
 
 
                     child:
