@@ -16,106 +16,117 @@ class OnboardingStart extends StatefulWidget {
 }
 
 class _OnboardingStartState extends State<OnboardingStart> {
- String selectedLanguage="en";
- String selectedTheme="light";
+  String selectedLanguage = "en";
+  String selectedTheme = "light";
+
   @override
   Widget build(BuildContext context) {
-    selectedLanguage=context.locale.languageCode;
-    ThemeProvider provider =Provider.of<ThemeProvider>(context);
-   if(provider.mode==ThemeMode.light){
-     selectedTheme="light";
-   }
-   else{
-     selectedTheme="dark";
-   }
+    selectedLanguage = context.locale.languageCode;
+    ThemeProvider provider = Provider.of<ThemeProvider>(context);
+    if (provider.mode == ThemeMode.light) {
+      selectedTheme = "light";
+    } else {
+      selectedTheme = "dark";
+    }
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10,
-          horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
-                child: Image.asset(AssetsManager.barLogo, height: 60,
+                child: Image.asset(
+                  AssetsManager.barLogo,
+                  height: 60,
                   fit: BoxFit.fitHeight,
                 ),
               ),
-              SizedBox(height: 28,),
+              SizedBox(height: 28),
               Image.asset(AssetsManager.creative2),
-              SizedBox(height: 28,),
-              Text("title_start".tr(),style: Theme.of(context).textTheme.headlineLarge),
-              SizedBox(height: 28,),
-              Text("sub_start".tr(),style:
-              Theme.of(context).textTheme.titleMedium),
-              SizedBox(height: 32,),
+              SizedBox(height: 28),
+              Text(
+                "title_start".tr(),
+                style: Theme.of(context).textTheme.headlineLarge,
+              ),
+              SizedBox(height: 28),
+              Text(
+                "sub_start".tr(),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              SizedBox(height: 32),
               Row(
                 children: [
-                Text("language".tr(),style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  fontWeight: FontWeight.w500
-              )),
+                  Text(
+                    "language".tr(),
+                    style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   Spacer(),
                   CustomSwitch(
-                    values: ["en","ar"],
+                    values: ["en", "ar"],
                     current: selectedLanguage,
                     icon1: AssetsManager.america,
                     icon2: AssetsManager.egypt,
-                    onChange: (value){
+                    onChange: (value) {
                       setState(() {
-                        selectedLanguage=value;
+                        selectedLanguage = value;
                       });
-                      if(selectedLanguage=="ar"){
+                      if (selectedLanguage == "ar") {
                         context.setLocale(Locale("ar"));
-                      }
-                      else{
+                      } else {
                         context.setLocale(Locale("en"));
                       }
                     },
-                  )
+                  ),
                 ],
               ),
-              SizedBox(height: 16,),
+              SizedBox(height: 16),
               Row(
                 children: [
-                Text("theme".tr(),
+                  Text(
+                    "theme".tr(),
                     style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                  fontWeight: FontWeight.w500
-                )),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   Spacer(),
                   CustomSwitch(
                     isColored: true,
-                    values: ["light","dark"],
+                    values: ["light", "dark"],
                     current: selectedTheme,
                     icon1: AssetsManager.sun,
                     icon2: AssetsManager.moon,
-                    onChange: (value){
+                    onChange: (value) {
                       setState(() {
-                        selectedTheme=value;
-                        if(selectedTheme=="dark"){
+                        selectedTheme = value;
+                        if (selectedTheme == "dark") {
                           provider.changeTheme(ThemeMode.dark);
                           PrefsManager.setTheme(ThemeMode.dark);
-                        }
-                        else{
+                        } else {
                           provider.changeTheme(ThemeMode.light);
                           PrefsManager.setTheme(ThemeMode.light);
                         }
                       });
                     },
-                  )
+                  ),
                 ],
               ),
               Spacer(),
-              CustomButton(title: "lets_start",
-              onPressed: ()async{
-                await PrefsManager.setStart(true);
-                Navigator.of(context).pushReplacementNamed(
-                    RouteManager.onboarding);
-              },)
-
+              CustomButton(
+                title: "lets_start",
+                onPressed: () async {
+                  await PrefsManager.setStart(true);
+                  Navigator.of(
+                    context,
+                  ).pushReplacementNamed(RouteManager.onboarding);
+                },
+              ),
             ],
           ),
         ),
       ),
-    ) ;
+    );
   }
 }
