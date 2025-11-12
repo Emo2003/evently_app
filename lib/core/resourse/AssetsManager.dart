@@ -22,4 +22,12 @@ abstract final class AssetsManager{
   static const String  map_selected ="assets/images/Map_Pin_Selected.png";
   static const String  love_selected ="assets/images/Heart_Selected.png";
   static const String  profile_selected ="assets/images/User_Selected.png";
+  static const String  sport ="assets/images/Sports.png";
+  static const String  book_club ="assets/images/Book Club.png";
+  static const String  birthday ="assets/images/Birthday.png";
+  static const String  reset_pass ="assets/images/change-setting.png";
+  static const String  imageProfile ="assets/images/imageProfile.jpg";
+  static const String  searchImage ="assets/images/Search.png";
+  static const String  clock ="assets/images/Clock.svg";
+  static const String  calendar="assets/images/Calendar_Days.svg";
 }

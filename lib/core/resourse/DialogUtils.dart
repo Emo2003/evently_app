@@ -1,4 +1,6 @@
+import 'package:evently_app/core/resourse/ColorsManager.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DialogUtils{
   static LoadingDialog( BuildContext context){
@@ -18,6 +20,7 @@ class DialogUtils{
   }
   static DialogMessage(
   { required String message,
+    required String content,
      required BuildContext context,
       required  void Function() positiveOnPressed,
       required String positiveButtonText,
@@ -27,7 +30,8 @@ class DialogUtils{
         barrierDismissible: false,
         builder:
         (context)=>AlertDialog(
-       title:Text(message, style:
+          title: Text(message, style: Theme.of(context).textTheme.headlineLarge,),
+       content:Text(content, style:
        Theme.of(context).textTheme.titleMedium,) ,
           actions:[
             TextButton(onPressed: (){
@@ -45,6 +49,18 @@ class DialogUtils{
             ))),
           ]
     ) );
+  }
+
+  static toastMessage(String message){
+    Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: ColorsManager.blue,
+        textColor: ColorsManager.backgroundLight,
+        fontSize: 20.0
+    );
   }
 
 

@@ -7,8 +7,6 @@ class FirebaseServices {
 
   Future<UserCredential?> signInWithGoogle() async {
     try {
-      await googleSignIn.signOut();
-
       final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
 
       if (googleSignInAccount == null) {
