@@ -33,13 +33,7 @@ It includes essential onboarding and authentication features to help users easil
 * **Storage:** Shared Preferences
 
 
----
 
-## 🎬 Demo / Video
-
-* **First Assignment Demo:**
-*  [First Assignment](https://github.com/user-attachments/assets/3a4fdf7a-9f47-48df-aeba-3eca5df6d2d0)
-* [second Assignment](https://github.com/user-attachments/assets/02105984-d496-4939-b171-0a4f351d03a0)
 
 
 
